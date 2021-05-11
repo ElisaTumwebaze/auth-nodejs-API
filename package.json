@@ -1,0 +1,22 @@
+{
+  "name": "food-api",
+  "version": "1.0.0",
+  "description": "first food first authentication api",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ElisaTumwebaze/auth-nodejs-API.git"
+  },
+  "author": "Elisa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ElisaTumwebaze/auth-nodejs-API/issues"
+  },
+  "homepage": "https://github.com/ElisaTumwebaze/auth-nodejs-API#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
