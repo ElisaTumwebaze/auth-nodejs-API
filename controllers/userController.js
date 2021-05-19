@@ -1,11 +1,12 @@
 const pool = require('../models/db');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+//extracting user information into an object
 userInfoHandler = (user) => ({
     userId:user.id,
     userName:user.username,
     email:user.email
-})  
+})
 
 signup_user = async(req,res) =>{
     const {username,email,password} = req.body;
@@ -73,5 +74,29 @@ login_user = async (req,res)=>{
         console.error(err.message)
     }
     }
+    post_orders =verifyToken,(req,res)=>{
+        jwt.verify(req.token,my_secret_key,(err,authData)=>{
+            if(err){
+                res.sendStatus(403)
+            }else{
+                res.json({message:'welcome thanks',
+                authData
+            })
+            }
+        })
+        
 
-module.exports ={signup_user,login_user}
+    }
+// verify token
+    function verifyToken(req,res,next){
+        const bearerHeader = req.headers['authorization']
+        if(typeof bearerHeader !=='undefined'){
+            const bearerToken = bearerHeader.split(' ')[1]
+            req.token = bearerToken;
+            next();
+        }else{
+            res.sendStatus(403);
+        }
+    }
+
+module.exports ={signup_user,login_user,post_orders}
