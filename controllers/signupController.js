@@ -1,6 +1,6 @@
-const pool = require('../models/db');
+const pool = require('../models/dbConfig');
 const bcrypt = require('bcrypt');
-const jwtGenerator = require('../utils/jwtGenenerator');
+const jwtGenerator = require('../utils/jwtGenerator');
 
 //signup controller
 module.exports = async(req,res) =>{
@@ -26,14 +26,14 @@ module.exports = async(req,res) =>{
     else{   
         try{
             //check if the username is taken 
-            const checkUser = await pool.query("SELECT FROM users WHERE username =$1",[username]);
+            const checkUser = await pool.query("SELECT FROM users WHERE user_name =$1",[username]);
             if(checkUser.rowCount>0){
             return res.send({err:'That Username is Taken'})
             }
             else{
                 const salt = await bcrypt.genSalt(10);
                 const hashedPassword = await bcrypt.hash(password,salt);
-                const user = await pool.query("INSERT INTO users(username,email,user_password) VALUES($1,$2,$3) RETURNING *",[username,email,hashedPassword]);
+                const user = await pool.query("INSERT INTO users(user_name,user_email,user_password) VALUES($1,$2,$3) RETURNING *",[username,email,hashedPassword]);
                 if(user){
                     const token = jwtGenerator(user.rows[0])
                     res.json({token})     

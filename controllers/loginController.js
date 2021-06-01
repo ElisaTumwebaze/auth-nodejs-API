@@ -1,12 +1,12 @@
-const pool = require('../models/db');
+const pool = require('../models/dbConfig');
 const bcrypt = require('bcrypt');
-const jwtGenerator = require('../utils/jwtGenenerator');
+const jwtGenerator = require('../utils/jwtGenerator');
 
 //login controller    
 module.exports = async (req,res)=>{
     const {username,password} = req.body;
     try{
-        const user = await pool.query("SELECT * FROM users WHERE username = $1",[username]);
+        const user = await pool.query("SELECT * FROM users WHERE user_name = $1",[username]);
         if(user.rows.length === 0){
            return res.status(401).json({err:'Invalid login credentials'});
         }
