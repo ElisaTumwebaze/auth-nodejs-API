@@ -7,7 +7,7 @@ CREATE TABLE users(
    user_name VARCHAR(255) NOT NULL,
    user_email VARCHAR(255) NOT NULL,
    user_password VARCHAR(255) NOT NULL,
-   user_role VARCHAR(50)
+   user_role VARCHAR(50) DEFAULT 'Basic'
 );
 
 CREATE TABLE foods(
@@ -23,6 +23,7 @@ CREATE TABLE orders(
    user_id BIGINT NOT NULL,
    quantity INT NOT NULL,
    locaton VARCHAR(50) NOT NULL,
+   order_status VARCHAR(25) DEFAULT 'New',
   CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (user_id),
   CONSTRAINT fk_food FOREIGN KEY (food_id) REFERENCES foods (food_id)
 );

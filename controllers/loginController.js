@@ -13,9 +13,11 @@ module.exports = async (req,res)=>{
         const validPassword = await bcrypt.compare(password,user.rows[0].user_password);
         if(!validPassword){
             return res.status(401).json({err:'Invalid login credentials'});
+        }else{
+            const token = await jwtGenerator(user.rows[0])
+            return res.json({token});
         }
-        const token = jwtGenerator(user.rows[0])
-        res.json({token});  
+          
     }
     catch(err){
         console.error(err.message)

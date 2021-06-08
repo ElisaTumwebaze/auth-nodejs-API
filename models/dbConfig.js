@@ -1,10 +1,12 @@
 const Pool = require('pg').Pool;
+const dotenv = require('dotenv')
+dotenv.config();
 // Database connection 
 const pool = new Pool({
-    user:'postgres',
-    password:'conas91100Y',
-    database:'first-food-db',
-    host: 'localhost',
-    port:'5432'
+    user:process.env.DB_USER,
+    password:process.env.DB_PASSWORD,
+    database:process.env.DB_NAME,
+    host: process.DB_HOST,
+    port:process.env.DB_PORT
 });
 module.exports = pool;

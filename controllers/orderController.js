@@ -1,19 +1,19 @@
 const pool = require('../models/dbConfig');
-const jwt =require('jsonwebtoken');
-
 //post orders controller
 module.exports = async(req,res)=>{
-    const jwtToken = req.header('token')
-    const payload = await jwt.verify(jwtToken,'my_secret_key')
-    const userId = payload.user.userId;
     const {foodId,quantity,location} = req.body;
-    
+    //checking from foods table if the given food_id exist
+    const checkFood =await pool.query("SELECT food_id FROM foods WHERE food_id = $1",[foodId]);
+    //geting the user_id from verified token by authorization function
+    const id = req.user.userId;
     try{
-        const order = await pool.query("INSERT INTO orders(food_id,user_id,quantity,location) VALUES($1,$2,$3,$4) RETURNING *",[foodId,userId,quantity,location]);
-        if(order){
-            const viewOrder = await order.rows[0];
-           res.json({viewOrder})     
+        if(checkFood.rows.length >0){
+            const order = await pool.query("INSERT INTO orders(food_id,user_id,quantity,location) VALUES($1,$2,$3,$4) RETURNING *",[foodId,id,quantity,location]);
+                return res.json(order.rows[0])     
         }
+        else{
+            res.status(404).json({error:'No food with that Id'})
+        }   
     }
     catch(err){
         console.error(err.message)
