@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const pool = require('../models/dbConfig');
 
 module.exports = async(req,res,next)=>{
     try{
@@ -8,10 +9,20 @@ module.exports = async(req,res,next)=>{
         if(!jwtToken){
             res.status(403).json('Not Authorized');
         }
-        //verifying whether the token is authentic
+        //verify if the token is authentic
         const payload = jwt.verify(jwtToken,'my_secret_key')
         req.user = payload.user
-        next()
+        const id =payload.user.userId
+        //checking the role of the user
+        const check = await pool.query("SELECT user_role FROM users WHERE user_id = $1",[id])
+        const result=check.rows[0];
+        //checking if the user_role is  an Admin
+        if(result.user_role == 'Admin'){
+            next();
+        }
+        else{
+            return res.json('Un Authorized Acess');
+        }
     }
     catch(err){
         console.error(err.message)
