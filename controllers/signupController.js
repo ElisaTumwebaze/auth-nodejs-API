@@ -1,26 +1,34 @@
 const pool = require('../models/dbConfig');
 const bcrypt = require('bcrypt');
 const jwtGenerator = require('../utils/jwtGenerator');
+const emailValid= require('../utils/emailValid');
+const usernameValid=require('../utils/usernameValid');
 
 //signup controller
 module.exports = async(req,res) =>{
     const {username,email,password} = req.body;
 //validation of the user information
     if(username ===''){
-        return res.send({err:'Please enter the username'});
+        return res.status(400).json({error:'Please enter the username'});
+    }
+    else if(!usernameValid(username)){
+        return res.status(400).json({error:'usernane allows Only letters and spaces'});
     }
      
     else if(email ===''){
-        return res.send({err:'email is required'});
+        return res.status(400).json({error:'email is required'});
+    }
+    else if(!emailValid(email)){
+        return res.status(422).json({error:'Invalid email'})
     }
     else if(password ===''){
-        return res.send({err:'password is required'});
+        return res.status(400).json({error:'password is required'});
     }
     else if(username.length<4){
-        return res.send({err:'username should be atleast 4 characters'});
+        return res.status(400).json({error:'username should be atleast 4 characters'});
     }
     else if(password.length<6){
-        return res.send({err:'password should be atleast 6 characters'});   
+        return res.status(400).json({error:'password should be atleast 6 characters'});   
     }
 
     else{   
@@ -28,7 +36,7 @@ module.exports = async(req,res) =>{
             //check if the username is taken 
             const checkUser = await pool.query("SELECT FROM users WHERE user_name =$1",[username]);
             if(checkUser.rowCount>0){
-            return res.send({err:'That Username is Taken'})
+            return res.status(400).json({error:'That Username is Taken'})
             }
             else{
                 const salt = await bcrypt.genSalt(10);

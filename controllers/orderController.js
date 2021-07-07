@@ -6,17 +6,26 @@ module.exports = async(req,res)=>{
     const checkFood =await pool.query("SELECT food_id FROM foods WHERE food_id = $1",[foodId]);
     //geting the user_id from verified token by authorization function
     const id = req.user.userId;
-    try{
-        if(checkFood.rows.length >0){
-            const order = await pool.query("INSERT INTO orders(food_id,user_id,quantity,location) VALUES($1,$2,$3,$4) RETURNING *",[foodId,id,quantity,location]);
-                return res.json(order.rows[0])     
-        }
-        else{
-            res.status(404).json({error:'No food with that Id'})
-        }   
+    //validation
+    if(quantity ===''){
+        return res.status(400).json({error:'Please Enter Quantity'})
     }
-    catch(err){
-        console.error(err.message)
-        res.status(500).send('server Error')
+    else if(location === ''){
+        return res.status(400).json({error:'Please enter location'})
+    }
+    else{
+        try{
+            if(checkFood.rows.length >0){
+                const order = await pool.query("INSERT INTO orders(food_id,user_id,quantity,location) VALUES($1,$2,$3,$4) RETURNING *",[foodId,id,quantity,location]);
+                    return res.json(order.rows[0])     
+            }
+            else{
+                res.status(404).json({error:'No food with that Id'})
+            }   
+        }
+        catch(err){
+            console.error(err.message)
+            res.status(500).send('server Error')
+        }
     }
 }

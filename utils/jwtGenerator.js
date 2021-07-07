@@ -10,6 +10,6 @@ function jwtGenerator(user){
             email:user.user_email
         }
     }
-    return jwt.sign(payload,process.env.JWT_KEY,{expiresIn:'1h'});
+    return jwt.sign(payload,process.env.JWT_KEY,{expiresIn:'1h',algorithm:'HS256'});
 }
 module.exports = jwtGenerator
