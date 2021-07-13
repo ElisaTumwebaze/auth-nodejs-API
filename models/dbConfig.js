@@ -1,5 +1,4 @@
 const dotenv = require('dotenv').config();
-let pg = require('pg');
 // Database connection 
 let connectionString = process.env.DATABASE_URL
 const {Pool} = require('pg');
