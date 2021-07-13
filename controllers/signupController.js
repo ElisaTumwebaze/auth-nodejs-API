@@ -12,7 +12,7 @@ module.exports = async(req,res) =>{
         return res.status(400).json({error:'Please enter the username'});
     }
     else if(!usernameValid(username)){
-        return res.status(400).json({error:'usernane allows Only letters and spaces'});
+        return res.status(422).json({error:'usernane allows Only letters and spaces'});
     }
      
     else if(email ===''){
@@ -28,7 +28,7 @@ module.exports = async(req,res) =>{
         return res.status(400).json({error:'username should be atleast 4 characters'});
     }
     else if(password.length<6){
-        return res.status(400).json({error:'password should be atleast 6 characters'});   
+        return res.status(422).json({error:'password should be atleast 6 characters'});   
     }
 
     else{   
@@ -44,7 +44,7 @@ module.exports = async(req,res) =>{
                 const user = await pool.query("INSERT INTO users(user_name,user_email,user_password) VALUES($1,$2,$3) RETURNING *",[username,email,hashedPassword]);
                 if(user){
                     const token = jwtGenerator(user.rows[0])
-                    res.json({token})     
+                    res.status(201).json({token})     
                 }
             }     
         }

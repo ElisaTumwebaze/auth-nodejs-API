@@ -26,7 +26,7 @@ module.exports = async(req,res)=>{
         const addFoodItem = await pool.query("INSERT INTO foods(food_name,price,photo) VALUES($1,$2,$3) RETURNING *",[foodname,price,imageUrl]);
         if(addFoodItem){
             const foodItem = await addFoodItem.rows[0];
-            res.json({foodItem})     
+            res.status(201).json({foodItem})     
         }
     }
     catch(err){
