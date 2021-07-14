@@ -14,7 +14,7 @@ module.exports = async(req,res,next)=>{
             //getting the token from the splited string
             const jwtToken = spiltedStr[1];
             //verify if the token is authentic
-            const payload = await jwt.verify(jwtToken,process.env.JWT_KEY,{algorithm:'HS256'})
+            const payload = await jwt.verify(jwtToken,process.env.JWT_KEY,{algorithm:'HS384'})
             req.user = payload.user
             const id =payload.user.userId
             //checking the role of the user
