@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const orderRoutes =require('./routes/orderRoutes');
 const menuRoutes =require('./routes/menuRoutes');
@@ -10,6 +11,11 @@ app.use(express.static('public'));
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 
+app.use(() => {
+    ctx.response.header.set()
+})
+
+app.use(cors());
 //middleware for using routes
 app.use(authRoutes);
 app.use(orderRoutes);
