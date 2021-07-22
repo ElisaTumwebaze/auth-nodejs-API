@@ -14,10 +14,10 @@ module.exports = async (req,res)=>{
         if(!validPassword){
             return res.status(401).json({error:'Invalid login credentials'});
         }else{
+            const userRole = await user.rows[0].user_role
             const token = await jwtGenerator(user.rows[0])
-            return res.json({token});
-        }
-          
+            return res.status(200).json({token,userRole});
+        }      
     }
     catch(err){
         console.error(err.message)
