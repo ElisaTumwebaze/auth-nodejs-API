@@ -17,7 +17,7 @@ module.exports = async(req,res)=>{
         try{
             if(checkFood.rows.length >0){
                 const order = await pool.query("INSERT INTO orders(food_id,user_id,quantity,location) VALUES($1,$2,$3,$4) RETURNING *",[foodId,id,quantity,location]);
-                    return res.json(order.rows[0])     
+                return res.status(200).json({message:order.rows[0]})     
             }
             else{
                 res.status(404).json({error:'No food with that Id'})
@@ -25,7 +25,7 @@ module.exports = async(req,res)=>{
         }
         catch(err){
             console.error(err.message)
-            res.status(500).send('server Error')
+            res.status(500).json({error:'server Error'})
         }
     }
 }

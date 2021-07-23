@@ -5,11 +5,11 @@ module.exports = async(req,res)=>{
         const getOrders = await pool.query("SELECT * FROM orders");
         if(getOrders){
             const allOrders = await getOrders.rows;
-           res.json({allOrders})     
+           res.status(200).json({message:allOrders})     
         }
     }
     catch(err){
         console.error(err.message)
-        res.status(500).send('server Error')
+        res.status(500).json({error:'Server error'});
     }
 }

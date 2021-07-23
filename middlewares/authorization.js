@@ -18,11 +18,11 @@ module.exports = async(req,res,next)=>{
             next();    
         }
         else{
-            res.status(403).json({error:'Not authorized'});
+            res.status(403).json({error:err.message});
         }    
     }
     catch(err){
         console.error(err.message)
-        return res.status(403).json({error:'Not authorized'})
+        return res.status(403).json({error:err.message})
     }
 }
