@@ -2,7 +2,7 @@ const pool = require('../models/dbConfig');
 //Get all orders controller
 module.exports = async(req,res)=>{
     try{
-        const getOrders = await pool.query("SELECT * FROM orders");
+        const getOrders = await pool.query("SELECT * FROM orders JOIN foods ON orders.food_id = foods.food_id");
         if(getOrders){
             const allOrders = await getOrders.rows;
            res.status(200).json({message:allOrders})     

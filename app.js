@@ -1,18 +1,20 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const path = require('path')
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const orderRoutes =require('./routes/orderRoutes');
 const menuRoutes =require('./routes/menuRoutes');
 require('dotenv').config();
+
+//creating a express server instance
 const app = express();
 const PORT = process.env.PORT;
 
-app.use(express.static('public'));
-app.use(express.urlencoded({extended:true}));
-app.use(express.json());
-
-//handling cross site resourse sharing.
+app.use(bodyParser.json());
+app.use('/images',express.static(path.join(__dirname,'images')));
 app.use(cors());
+
 //middleware for using routes
 app.use(authRoutes);
 app.use(orderRoutes);
