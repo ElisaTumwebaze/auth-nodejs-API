@@ -1,17 +1,8 @@
 const multer = require('multer');
 const path = require('path');
-//storage method
-const storage =multer.diskStorage({
-    destination:function(req,file,cb){
-        cb(null,'./images')
-    },
-    filename:function(req,file,cb){
-        cb(null,Date.now() + '_' + file.originalname)
-    }  
-});
-//multer upload method
-const upload =multer({
-    storage:storage,
+
+module.exports = multer({
+    storage:multer.diskStorage({}),
     limits:{
         fileSize:1024*1024*5
     },
@@ -25,6 +16,8 @@ const upload =multer({
         }else{
             cb('Un supported FileType',false)
        }
-    }
+    },
+    filename:function(req,file,cb){
+        cb(null,Date.now() + '_' + file.originalname)
+    }  
 })
-module.exports ={upload:upload}
