@@ -1,5 +1,5 @@
 const pool = require('../models/dbConfig');
-const cloudinary = require('../utils/cloudinary');
+const {cloudinary} = require('../utils/cloudinary');
 const validPrice = require('../utils/validatePrice');
 const validFoodName =require('../utils/validFoodName');
 //add menu item controller
