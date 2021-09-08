@@ -24,7 +24,7 @@ module.exports = async(req,res)=>{
     
     try{
         const result = await cloudinary.uploader.upload(req.file.path)
-        const imageUrl =req.file.path
+        const imageUrl =result.secure_url;
         const addFoodItem = await pool.query("INSERT INTO foods(food_name,price,photo) VALUES($1,$2,$3) RETURNING *",[foodname,price,imageUrl]);
         if(addFoodItem){
             const foodItem = await addFoodItem.rows[0];

@@ -2,7 +2,6 @@ const express = require('express');
 const adminAuthorization = require('../middlewares/adminAuthorization');
 const authorization = require('../middlewares/authorization');
 const addMealController =require('../controllers/addMealController');
-const imageUploader = require('../utils/multer');
 const getMenuController =require('../controllers/getMenuController');
 const menuItemByIdController = require('../controllers/menuItemByIdController');
 const editMenu = require('../controllers/editMenu')
