@@ -2,6 +2,7 @@ const pool = require('../models/dbConfig');
 const cloudinary = require('../utils/cloudinary');
 const validPrice = require('../utils/validatePrice');
 const validFoodName =require('../utils/validFoodName');
+const path = require('path');
 //add menu item controller
 module.exports = async(req,res)=>{
     const{foodname,price} = req.body
@@ -23,7 +24,7 @@ module.exports = async(req,res)=>{
     }
     
     try{
-        const result = await cloudinary.uploader.upload(req.file.path)
+        const result = await cloudinary.uploader.upload(req.file.path);
         const imageUrl =result.secure_url;
         const addFoodItem = await pool.query("INSERT INTO foods(food_name,price,photo) VALUES($1,$2,$3) RETURNING *",[foodname,price,imageUrl]);
         if(addFoodItem){
