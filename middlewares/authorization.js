@@ -13,16 +13,16 @@ module.exports = async(req,res,next)=>{
             //getting the token from the splited string
             const jwtToken = spiltedStr[1];
             //verify if the token is authentic
-            const payload = await jwt.verify(jwtToken,process.env.JWT_KEY,{algorithm:'HS256'})
+            const payload = await jwt.verify(jwtToken,process.env.JWT_KEY,{algorithm:'HS384'})
             req.user = payload.user
             next();    
         }
         else{
-            res.status(403).json({error:'Not authorized'});
+            res.status(403).json({error:err.message});
         }    
     }
     catch(err){
         console.error(err.message)
-        return res.status(403).json({error:'Not authorized'})
+        return res.status(403).json({error:err.message})
     }
 }

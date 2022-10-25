@@ -22,8 +22,10 @@ CREATE TABLE orders(
    food_id BIGINT NOT NULL,
    user_id BIGINT NOT NULL,
    quantity INT NOT NULL,
-   locaton VARCHAR(50) NOT NULL,
+   location VARCHAR(50) NOT NULL,
    order_status VARCHAR(25) DEFAULT 'New',
   CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (user_id),
   CONSTRAINT fk_food FOREIGN KEY (food_id) REFERENCES foods (food_id)
 );
+
+UPDATE users SET user_role = 'Admin' WHERE user_id = 2;

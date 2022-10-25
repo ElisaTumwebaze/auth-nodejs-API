@@ -1,4 +1,5 @@
 const pool = require('../models/dbConfig');
+const validlocation = require('../utils/locationValid');
 //post orders controller
 module.exports = async(req,res)=>{
     const {foodId,quantity,location} = req.body;
@@ -13,11 +14,14 @@ module.exports = async(req,res)=>{
     else if(location === ''){
         return res.status(400).json({error:'Please enter location'})
     }
+    else if(!validlocation){
+        return res.satus(400).json({error:'location should be only letters and white spaces'});
+    }
     else{
         try{
             if(checkFood.rows.length >0){
                 const order = await pool.query("INSERT INTO orders(food_id,user_id,quantity,location) VALUES($1,$2,$3,$4) RETURNING *",[foodId,id,quantity,location]);
-                    return res.json(order.rows[0])     
+                return res.status(201).json({message:order.rows[0]})     
             }
             else{
                 res.status(404).json({error:'No food with that Id'})
@@ -25,7 +29,7 @@ module.exports = async(req,res)=>{
         }
         catch(err){
             console.error(err.message)
-            res.status(500).send('server Error')
+            res.status(500).json({error:'server Error'})
         }
     }
 }

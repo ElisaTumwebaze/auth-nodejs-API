@@ -1,9 +1,9 @@
 const pool = require('../models/dbConfig');
-const {cloudinary} = require('../utils/cloudinary');
 const validPrice = require('../utils/validatePrice');
 const validFoodName =require('../utils/validFoodName');
-//add menu item controller
+
 module.exports = async(req,res)=>{
+    const {id} = req.params;
     const{foodname,price} = req.body
     //checking if the file is selected
     if(req.file == undefined){
@@ -21,21 +21,16 @@ module.exports = async(req,res)=>{
     else if(!validPrice(price)){
         return res.status(400).json({error:'Invalid Price only numeric characters'});
     }
-    else{
     
-        try{
-            const result = await cloudinary.uploader.upload(req.file.path);
-            const imageUrl =result.secure_url;
-            const photoId=result.public_id;
-            const addFoodItem = await pool.query("INSERT INTO foods(food_name,price,photo,cloudinary_id) VALUES($1,$2,$3,$4) RETURNING *",[foodname,price,imageUrl,photoId]);
-            if(addFoodItem){
-                const foodItem = await addFoodItem.rows[0];
-                res.status(201).json({message:foodItem})     
-            }
+    try{
+        const imageUrl =req.file.path;
+        const update = await pool.query("UPDATE foods SET food_name=$1,price=$2,photo=$3 WHERE food_id = $4",[foodname,price,imageUrl,id]);
+            if(update){
+                res.status(200).json({message:'food Updated'})
+            }        
         }
-        catch(err){
-        console.error(err.message)
-        res.status(500).json({error:'server error'})
-        }
+    catch(err){
+    console.error(err.message)
+    res.status(500).json({error:'server error'})
     }
 }
