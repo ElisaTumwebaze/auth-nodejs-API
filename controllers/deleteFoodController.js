@@ -1,5 +1,4 @@
 const pool = require('../models/dbConfig');
-
 module.exports = async(req,res)=>{
     const{id} = req.params;
     try{

@@ -22,10 +22,12 @@ module.exports = async(req,res)=>{
         return res.status(400).json({error:'Invalid Price only numeric characters'});
     }
     else{
+    
         try{
             const result = await cloudinary.uploader.upload(req.file.path);
             const imageUrl =result.secure_url;
-            const addFoodItem = await pool.query("INSERT INTO foods(food_name,price,photo) VALUES($1,$2,$3) RETURNING *",[foodname,price,imageUrl]);
+            const photoId=result.public_id;
+            const addFoodItem = await pool.query("INSERT INTO foods(food_name,price,photo,cloudinary_id) VALUES($1,$2,$3,$4) RETURNING *",[foodname,price,imageUrl,photoId]);
             if(addFoodItem){
                 const foodItem = await addFoodItem.rows[0];
                 res.status(201).json({message:foodItem})     
