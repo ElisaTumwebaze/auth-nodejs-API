@@ -28,4 +28,5 @@ CREATE TABLE orders(
   CONSTRAINT fk_food FOREIGN KEY (food_id) REFERENCES foods (food_id)
 );
 
-UPDATE users SET user_role = 'Admin' WHERE user_id = 2;
+UPDATE users SET user_role = 'Admin' WHERE user_id = 1;
+ALTER TABLE foods ADD cloudinary_id varchar(255);
